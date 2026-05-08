@@ -1079,10 +1079,454 @@ def build_troptions_settlement_pdf() -> None:
     pdf.output(str(DOWNLOADS / "unykorn-black-troptions-settlement.pdf"))
 
 
+# ============================================================
+# Executive One-Pager
+# ============================================================
+def build_executive_one_pager() -> None:
+    pdf = InvestorPDF(
+        doc_title="Executive One-Pager",
+        doc_subtitle="Print-ready summary for credit committee, private lenders, and strategic partners"
+    )
+    pdf.set_auto_page_break(auto=True, margin=18)
+    pdf.add_page()
+
+    # Hero stat row
+    stats = [
+        ("$650K",    "Facility\nRequested"),
+        ("$1.41M",   "Base Revenue\nMay-Dec 2026"),
+        ("7.2x",     "Base-Case\nDSCR"),
+        ("6",        "Premium\nVehicles"),
+        ("12",       "A/A+ Tier\nEvents"),
+        ("$275K",    "Sponsor\nRevenue"),
+    ]
+    col_w = 186 / len(stats)
+    pdf.set_fill_color(*NAVY)
+    pdf.rect(12, pdf.get_y(), 186, 22, "F")
+    for i, (val, lbl) in enumerate(stats):
+        x = 12 + i * col_w
+        pdf.set_xy(x, pdf.get_y() + 2)
+        pdf.set_text_color(*GOLD)
+        pdf.set_font("Helvetica", "B", 13)
+        pdf.cell(col_w, 7, val, align="C", ln=False)
+    pdf.ln(9)
+    for i, (val, lbl) in enumerate(stats):
+        x = 12 + i * col_w
+        pdf.set_xy(x, pdf.get_y() + 1)
+        pdf.set_text_color(200, 185, 140)
+        pdf.set_font("Helvetica", "", 7)
+        for line in lbl.split("\n"):
+            pdf.set_xy(x, pdf.get_y())
+            pdf.cell(col_w, 4, line, align="C", ln=False)
+        pdf.set_xy(12 + (i + 1) * col_w, pdf.get_y() - 4)
+    pdf.ln(8)
+    pdf.divider()
+
+    # What is UNYKORN BLACK
+    pdf.section_title("What Is UNYKORN BLACK?")
+    pdf.body(
+        "UNYKORN BLACK is a premium event mobility and sponsorship platform launching in Atlanta for the 2026 "
+        "event super-cycle. The business operates black SUVs, executive sedans, and premium group vans across "
+        "World Cup, SEC Championship, TOUR Championship, Dragon Con, and 12 other Tier-A event windows. "
+        "Revenue combines dispatched fare income with presold BlackPass ride credits, branded sponsor route "
+        "inventory, hotel-corporate account blocks, and merchant referral activation."
+    )
+    pdf.divider()
+
+    # The ask
+    pdf.section_title("The Funding Request")
+    items = [
+        ("Total facility",                     "$650,000",   True),
+        ("Vehicle acquisition / down payments","$115,000",   False),
+        ("Equipment financing facility",        "$350,000",  False),
+        ("Insurance reserve (12-month buffer)", "$45,000",   False),
+        ("Licensing, compliance, legal, CPA",   "$25,000",   False),
+        ("Website, app, dispatch buildout",     "$35,000",   False),
+        ("Branding, QR codes, sponsor materials","$20,000",  False),
+        ("Working capital reserve",             "$60,000",   False),
+    ]
+    for label, amount, bold in items:
+        pdf.set_fill_color(*LIGHT) if not bold else pdf.set_fill_color(*NAVY)
+        pdf.set_text_color(*DARK) if not bold else pdf.set_text_color(*GOLD)
+        pdf.set_font("Helvetica", "B" if bold else "", 10)
+        pdf.set_x(12)
+        pdf.cell(146, 7, f"  {label}", fill=True, border="B")
+        pdf.cell(40, 7, amount, align="R", fill=True, border="B", ln=True)
+    pdf.ln(2)
+    pdf.divider()
+
+    # Scenario table
+    pdf.section_title("3-Scenario Financial View")
+    headers = ["Scenario", "Fleet", "Gross Revenue", "EBITDA", "Debt Service", "DSCR"]
+    widths  = [28, 24, 36, 32, 34, 32]
+    pdf.set_fill_color(*NAVY)
+    pdf.set_text_color(*GOLD)
+    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_x(12)
+    for h, w in zip(headers, widths):
+        pdf.cell(w, 7, h, fill=True, border=1)
+    pdf.ln()
+    for i, (name, fleet, rev, ebitda, ds, dscr) in enumerate(SCENARIOS):
+        shade = (i % 2 == 0)
+        pdf.set_fill_color(*LIGHT) if shade else pdf.set_fill_color(*WHITE)
+        pdf.set_text_color(*DARK)
+        pdf.set_font("Helvetica", "", 9)
+        pdf.set_x(12)
+        for val, w in zip([name, fleet, rev, ebitda, ds, dscr], widths):
+            pdf.cell(w, 7, val, fill=True, border=1)
+        pdf.ln()
+    pdf.ln(2)
+    pdf.divider()
+
+    # Why lenders say yes
+    pdf.section_title("Why Lenders Say Yes")
+    reasons = [
+        "Hard asset collateral: titled vehicle fleet with clear acquisition records and insurance reserve",
+        "Prepaid demand: BlackPass presales and sponsor contracts signed before peak events reduce deployment risk",
+        "Event-calendar demand certainty: 12 Tier-A Atlanta events May-Dec 2026 with confirmed dates",
+        "Diversified revenue: 7 streams - rides, VIP blocks, BlackPass, sponsors, referrals, partner fleet, settlement",
+        "Overflow model: partner fleet absorbs surge without capital over-commitment",
+        "TROPTIONS settlement: every transaction audited, sponsor payouts escrowed, lender-visible KPIs",
+        "WhichWay ecosystem: guest OS, merchant, map, and event modules drive ride volume independent of cold outreach",
+    ]
+    for r in reasons:
+        pdf.bullet(r)
+    pdf.divider()
+
+    # Proposed loan structure summary
+    pdf.section_title("Proposed Loan Structure (Summary)")
+    loan_items = [
+        ("Facility type",       "Term loan with staged draw-down tied to sponsor presales"),
+        ("Amount",              "$650,000"),
+        ("Term",                "24 months"),
+        ("Proposed rate",       "Prime + 2-4% (negotiable based on security package)"),
+        ("Security",            "1st lien on fleet vehicles + assignment of sponsor contracts + BlackPass escrow"),
+        ("Repayment",           "Monthly P+I beginning month 3, after initial dispatch ramp"),
+        ("Staged release",      "Tranche 1: $300K at close | Tranche 2: $350K on $100K sponsor pre-sales proof"),
+    ]
+    for i, (k, v) in enumerate(loan_items):
+        pdf.kv_row(k, v, shaded=(i % 2 == 0))
+    pdf.ln(2)
+
+    pdf.set_fill_color(*NAVY)
+    pdf.set_text_color(*GOLD)
+    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_x(12)
+    pdf.cell(186, 8, f"  UNYKORN BLACK  |  Confidential  |  {DATE_PREPARED}  |  {CONTACT_URL}", fill=True, ln=True)
+
+    pdf.output(str(DOWNLOADS / "unykorn-black-executive-one-pager.pdf"))
+
+
+# ============================================================
+# Monthly Cash Flow Pro Forma
+# ============================================================
+def build_proforma_pdf() -> None:
+    pdf = InvestorPDF(
+        doc_title="Monthly Cash Flow Pro Forma",
+        doc_subtitle="Base-case 8-month projection May-Dec 2026 | Debt service, EBITDA, and cumulative cash"
+    )
+    pdf.set_auto_page_break(auto=True, margin=18)
+    pdf.add_page()
+
+    pdf.section_title("Assumptions and Model Basis")
+    assumptions = [
+        "Base scenario: 6 premium vehicles active by June 2026 (2 launched May, +2 June, +2 August)",
+        "Average dispatched fare: $85 per ride; average rides per vehicle per day: 4-6 depending on event density",
+        "Sponsor revenue phased: $50K signed at launch, $150K by August (World Cup + TOUR Championship window)",
+        "BlackPass presales: $25K May, $50K June-July (World Cup), $75K August-September peak",
+        "Operating costs: driver pay (35% of fare), fuel/maintenance (8%), insurance (included in reserve), platform (3%)",
+        "Fixed overhead: dispatch, compliance, admin estimated at $18,000/month",
+        "Debt service: $650K facility at 10% annualized = approximately $27,000/month from month 3",
+    ]
+    for a in assumptions:
+        pdf.bullet(a, size=9)
+    pdf.divider()
+
+    pdf.section_title("Monthly Pro Forma - Base Case (May-Dec 2026)")
+
+    months = ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "TOTAL"]
+    # Revenue rows
+    ride_rev    = [42000, 110000, 135000, 195000, 175000, 95000, 105000, 195000, 0]
+    blkpass     = [25000,  35000,  40000,  55000,  50000,  25000,  25000,  50000, 0]
+    sponsor     = [15000,  25000,  35000,  65000,  50000,  25000,  30000,  50000, 0]
+    vip_blocks  = [ 5000,  10000,  15000,  20000,  15000,  10000,  10000,  20000, 0]
+    referral    = [ 2000,   5000,   7000,  12000,  10000,   5000,   6000,  10000, 0]
+    # Calculate totals
+    for arr in [ride_rev, blkpass, sponsor, vip_blocks, referral]:
+        arr[-1] = sum(arr[:-1])
+    gross_rev = [sum(x) for x in zip(ride_rev, blkpass, sponsor, vip_blocks, referral)]
+
+    # Cost rows
+    driver_cost = [int(r * 0.35) for r in ride_rev[:-1]] + [0]
+    driver_cost[-1] = sum(driver_cost[:-1])
+    fuel_maint  = [int(r * 0.08) for r in ride_rev[:-1]] + [0]
+    fuel_maint[-1] = sum(fuel_maint[:-1])
+    platform    = [int(r * 0.03) for r in ride_rev[:-1]] + [0]
+    platform[-1] = sum(platform[:-1])
+    fixed_oh    = [18000]*8 + [0]
+    fixed_oh[-1] = sum(fixed_oh[:-1])
+    total_opex  = [driver_cost[i]+fuel_maint[i]+platform[i]+fixed_oh[i] for i in range(9)]
+
+    ebitda      = [gross_rev[i] - total_opex[i] for i in range(9)]
+    debt_svc    = [0, 0, 27000, 27000, 27000, 27000, 27000, 27000, 0]
+    debt_svc[-1] = sum(debt_svc[:-1])
+    net_cf      = [ebitda[i] - debt_svc[i] for i in range(9)]
+    cum_cf      = []
+    running = 0
+    for i, v in enumerate(net_cf[:-1]):
+        running += v
+        cum_cf.append(running)
+    cum_cf.append("")  # total col blank for cumulative
+
+    def fmt(v):
+        if v == 0 or v == "":
+            return "-" if v == 0 else ""
+        return f"${v:,.0f}"
+
+    def row(label, data, bold=False, shade=False, gold_bg=False):
+        pdf.set_fill_color(*NAVY) if gold_bg else (pdf.set_fill_color(*LIGHT) if shade else pdf.set_fill_color(*WHITE))
+        pdf.set_text_color(*GOLD) if gold_bg else pdf.set_text_color(*DARK)
+        pdf.set_font("Helvetica", "B" if bold else "", 8)
+        pdf.set_x(12)
+        pdf.cell(30, 6, f"  {label}", fill=True, border=1)
+        col_w = 156 / len(months)
+        for i, v in enumerate(data):
+            txt = fmt(v)
+            pdf.cell(col_w, 6, txt, fill=True, border=1, align="R")
+        pdf.ln()
+
+    # Header row
+    pdf.set_fill_color(*NAVY)
+    pdf.set_text_color(*GOLD)
+    pdf.set_font("Helvetica", "B", 8)
+    pdf.set_x(12)
+    pdf.cell(30, 7, "  Line Item", fill=True, border=1)
+    col_w = 156 / len(months)
+    for m in months:
+        pdf.cell(col_w, 7, m, fill=True, border=1, align="C")
+    pdf.ln()
+
+    row("Ride Revenue",    ride_rev,    shade=True)
+    row("BlackPass Sales", blkpass,     shade=False)
+    row("Sponsor Revenue", sponsor,     shade=True)
+    row("VIP Blocks",      vip_blocks,  shade=False)
+    row("Referrals",       referral,    shade=True)
+    row("GROSS REVENUE",   gross_rev,   bold=True, gold_bg=True)
+    pdf.ln(1)
+    row("Driver Pay (35%)",driver_cost, shade=True)
+    row("Fuel/Maint (8%)", fuel_maint,  shade=False)
+    row("Platform (3%)",   platform,    shade=True)
+    row("Fixed Overhead",  fixed_oh,    shade=False)
+    row("TOTAL OPEX",      total_opex,  bold=True, shade=True)
+    pdf.ln(1)
+    row("EBITDA",          ebitda,      bold=True, gold_bg=True)
+    row("Debt Service",    debt_svc,    shade=True)
+    row("NET CASH FLOW",   net_cf,      bold=True, shade=False)
+    row("Cumulative CF",   cum_cf,      shade=True)
+    pdf.ln(3)
+    pdf.divider()
+
+    pdf.section_title("Break-Even Analysis")
+    be_items = [
+        ("Monthly fixed overhead",             "$18,000"),
+        ("Monthly debt service (from month 3)","$27,000"),
+        ("Total monthly fixed burden",         "$45,000"),
+        ("Variable cost rate (% of fare rev)", "46%"),
+        ("Break-even fare revenue / month",    "$83,333"),
+        ("Break-even rides / month @ $85 avg", "~980 rides"),
+        ("Break-even rides / vehicle / day",   "~5.4 rides  (base fleet 6 vehicles)"),
+        ("Achieved at",                        "Month 2 (June - World Cup window)"),
+    ]
+    for i, (k, v) in enumerate(be_items):
+        pdf.kv_row(k, v, bold_right=True, shaded=(i % 2 == 0))
+    pdf.ln(2)
+
+    pdf.section_title("DSCR by Scenario")
+    dscr_rows = [
+        ("Lean",   "5 vehicles", "$723,150",  "$278,350", "$162,000", "1.7x"),
+        ("Base",   "6 vehicles", "$1,414,200","$433,200", "$162,000", "2.7x"),
+        ("Growth", "8 vehicles", "$2,365,000","$820,000", "$162,000", "5.1x"),
+    ]
+    hdrs  = ["Scenario","Fleet","Revenue","EBITDA","Annual Debt Svc","DSCR"]
+    wdths = [28,28,34,30,40,26]
+    pdf.set_fill_color(*NAVY)
+    pdf.set_text_color(*GOLD)
+    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_x(12)
+    for h, w in zip(hdrs, wdths):
+        pdf.cell(w, 7, h, fill=True, border=1)
+    pdf.ln()
+    for i, row_data in enumerate(dscr_rows):
+        pdf.set_fill_color(*LIGHT) if i % 2 == 0 else pdf.set_fill_color(*WHITE)
+        pdf.set_text_color(*DARK)
+        pdf.set_font("Helvetica", "", 9)
+        pdf.set_x(12)
+        for val, w in zip(row_data, wdths):
+            pdf.cell(w, 7, val, fill=True, border=1)
+        pdf.ln()
+    pdf.ln(3)
+
+    pdf.set_fill_color(*NAVY)
+    pdf.set_text_color(*GOLD)
+    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_x(12)
+    pdf.cell(186, 8, f"  UNYKORN BLACK Pro Forma  |  CONFIDENTIAL  |  {DATE_PREPARED}  |  {CONTACT_URL}", fill=True, ln=True)
+
+    pdf.output(str(DOWNLOADS / "unykorn-black-proforma.pdf"))
+
+
+# ============================================================
+# Proposed Term Sheet
+# ============================================================
+def build_term_sheet_pdf() -> None:
+    pdf = InvestorPDF(
+        doc_title="Proposed Term Sheet",
+        doc_subtitle="Non-binding indicative term sheet for lender review and credit committee use"
+    )
+    pdf.set_auto_page_break(auto=True, margin=18)
+    pdf.add_page()
+
+    pdf.section_title("Parties")
+    parties = [
+        ("Borrower",     "UNYKORN BLACK (operating entity - Atlanta, GA)"),
+        ("Operator",     "Kevan Burns, Chairman - UnyKorn / FTH Trading LLC"),
+        ("Lender",       "[Lender Name] - to be completed"),
+        ("Platform",     "WhichWay Event Mobility Platform | https://fifa.unykorn.org/"),
+        ("Settlement",   "TROPTIONS multi-chain settlement and escrow engine"),
+    ]
+    for i, (k, v) in enumerate(parties):
+        pdf.kv_row(k, v, shaded=(i % 2 == 0))
+    pdf.divider()
+
+    pdf.section_title("Facility Terms")
+    terms = [
+        ("Facility type",          "Senior secured term loan with staged draw-down schedule"),
+        ("Total amount",           "$650,000"),
+        ("Currency",               "US Dollars (USD)"),
+        ("Term",                   "24 months from first draw date"),
+        ("Proposed interest rate", "Prime Rate + 2.00% to 4.00% per annum (negotiable)"),
+        ("Current prime estimate", "7.50% (as of May 2026)  =>  blended ~9.5-11.5%"),
+        ("Payment structure",      "Interest-only months 1-2; P+I monthly thereafter"),
+        ("Monthly P+I estimate",   "~$27,000/month (at $650K, 10%, 24 months)"),
+        ("Prepayment",             "No penalty after month 6; 1% fee months 3-5"),
+        ("Default rate",           "Rate + 5.00% per annum"),
+    ]
+    for i, (k, v) in enumerate(terms):
+        pdf.kv_row(k, v, shaded=(i % 2 == 0))
+    pdf.divider()
+
+    pdf.section_title("Draw Schedule")
+    draws = [
+        ("Tranche 1 - At Close",         "$300,000", "Vehicle deposits, insurance reserve, compliance, working capital"),
+        ("Tranche 2 - Upon Trigger",      "$350,000", "Trigger: $100,000 in signed sponsor contracts OR BlackPass presales confirmed"),
+        ("Tranche 2 Deadline",            "90 days",  "From close date; forfeited if trigger not met (reverts to Tranche 1 only)"),
+    ]
+    hdrs  = ["Draw", "Amount", "Condition"]
+    wdths = [44, 30, 112]
+    pdf.set_fill_color(*NAVY)
+    pdf.set_text_color(*GOLD)
+    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_x(12)
+    for h, w in zip(hdrs, wdths):
+        pdf.cell(w, 7, h, fill=True, border=1)
+    pdf.ln()
+    for i, (draw, amt, cond) in enumerate(draws):
+        pdf.set_fill_color(*LIGHT) if i % 2 == 0 else pdf.set_fill_color(*WHITE)
+        pdf.set_text_color(*DARK)
+        pdf.set_font("Helvetica", "", 9)
+        pdf.set_x(12)
+        pdf.cell(44, 7, draw, fill=True, border=1)
+        pdf.cell(30, 7, amt, fill=True, border=1)
+        pdf.cell(112, 7, cond, fill=True, border=1, ln=True)
+    pdf.ln(2)
+    pdf.divider()
+
+    pdf.section_title("Security and Collateral")
+    security = [
+        ("1st lien - Vehicle fleet",        "First priority security interest on all financed vehicles (titled collateral)"),
+        ("Contract assignment",             "Assignment of all signed sponsor contracts and BlackPass presale agreements"),
+        ("Escrow pledge",                   "BlackPass and Founding Sponsor deposits held in TROPTIONS escrow; lender named beneficiary"),
+        ("Personal guarantee",              "Personal guarantee from operator for full facility amount"),
+        ("Fleet insurance endorsement",     "Lender named as additional insured and loss payee on all commercial vehicle policies"),
+        ("Deposit account control",         "Lender right to deposit account control agreement (DACA) on primary operating account"),
+    ]
+    for i, (k, v) in enumerate(security):
+        pdf.kv_row(k, v, shaded=(i % 2 == 0))
+    pdf.divider()
+
+    pdf.section_title("Financial Covenants")
+    covenants = [
+        ("Minimum DSCR",              "1.20x trailing 3-month tested quarterly from month 3"),
+        ("Minimum cash reserve",      "$50,000 unrestricted cash at all times after month 2"),
+        ("Insurance coverage",        "Commercial auto minimum $1M per occurrence; general liability $2M"),
+        ("Reporting frequency",       "Monthly: dispatch volume, revenue summary, sponsor pipeline, cash position"),
+        ("Audit right",               "Lender right to request TROPTIONS settlement report at any time"),
+        ("Cross-default",             "Default on any vehicle financing, insurance lapse, or license revocation = event of default"),
+    ]
+    for i, (k, v) in enumerate(covenants):
+        pdf.kv_row(k, v, shaded=(i % 2 == 0))
+    pdf.divider()
+
+    pdf.section_title("Conditions Precedent to Close")
+    conditions = [
+        "Executed loan agreement and security documents",
+        "Evidence of commercial vehicle insurance (lender named additional insured)",
+        "Vehicle purchase agreements or dealer LOIs for initial fleet units",
+        "Signed sponsor LOI or contract for minimum $25,000 (Tranche 1 only)",
+        "Operating agreement / entity documents for borrowing entity",
+        "Personal financial statement and background check for operator",
+        "TROPTIONS escrow account opened and beneficiary designation filed",
+        "WhichWay platform dispatch account activated and verified",
+    ]
+    for c in conditions:
+        pdf.bullet(c, size=9)
+    pdf.divider()
+
+    pdf.section_title("Fees")
+    fees = [
+        ("Origination fee",     "1.00% of total facility ($6,500) - deducted from first draw"),
+        ("Legal/documentation", "Borrower responsible for lender counsel fees (est. $2,500-$5,000)"),
+        ("Annual review fee",   "$500 annually"),
+        ("Wire fees",           "At cost"),
+    ]
+    for i, (k, v) in enumerate(fees):
+        pdf.kv_row(k, v, shaded=(i % 2 == 0))
+    pdf.ln(2)
+
+    pdf.section_title("Governing Law and Disclaimer")
+    pdf.body(
+        "This term sheet is non-binding and indicative only. It does not constitute a commitment to lend. "
+        "Final terms are subject to due diligence, credit committee approval, legal documentation, and executed "
+        "loan agreements. Governing law: State of Georgia, United States.",
+        size=9
+    )
+    pdf.ln(3)
+
+    # Signature blocks
+    pdf.set_fill_color(*LIGHT)
+    pdf.set_text_color(*DARK)
+    pdf.set_font("Helvetica", "", 9)
+    pdf.set_x(12)
+    pdf.cell(88, 24, "Borrower Signature: ___________________\n\nPrinted Name: ___________________\n\nDate: ___________________", fill=True, border=1, ln=False)
+    pdf.cell(10, 24, "", ln=False)
+    pdf.cell(88, 24, "Lender Signature: ___________________\n\nPrinted Name: ___________________\n\nDate: ___________________", fill=True, border=1, ln=True)
+    pdf.ln(3)
+
+    pdf.set_fill_color(*NAVY)
+    pdf.set_text_color(*GOLD)
+    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_x(12)
+    pdf.cell(186, 8, f"  UNYKORN BLACK Term Sheet  |  CONFIDENTIAL  |  {DATE_PREPARED}  |  {CONTACT_URL}", fill=True, ln=True)
+
+    pdf.output(str(DOWNLOADS / "unykorn-black-term-sheet.pdf"))
+
+
 def build_zip() -> None:
     zip_path = DOWNLOADS / "unykorn-black-downloads.zip"
     members = [
+        "unykorn-black-executive-one-pager.pdf",
         "unykorn-black-lender-proposal.pdf",
+        "unykorn-black-proforma.pdf",
+        "unykorn-black-term-sheet.pdf",
         "unykorn-black-sponsor-rate-card.pdf",
         "unykorn-black-troptions-settlement.pdf",
         "unykorn-black-lender-proposal.docx",
@@ -1097,9 +1541,13 @@ def main() -> None:
     build_lender_pdf()
     build_rate_card_pdf()
     build_troptions_settlement_pdf()
+    build_executive_one_pager()
+    build_proforma_pdf()
+    build_term_sheet_pdf()
     build_docx()
     build_csv()
     build_zip()
+    print("All documents generated successfully.")
 
 
 if __name__ == "__main__":
