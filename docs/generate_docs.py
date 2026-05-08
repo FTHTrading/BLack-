@@ -368,11 +368,180 @@ def build_csv() -> None:
         writer.writerows(EVENTS)
 
 
+def build_troptions_settlement_pdf() -> None:
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+    add_title(
+        pdf,
+        "TROPTIONS Settlement & Escrow Engine",
+        "POF, Multi-Asset Clearing, and Issuer Opportunity Framework for UNYKORN BLACK and WhichWay Network",
+    )
+
+    section_title(pdf, "1) Executive Summary: The Settlement Backbone")
+    paragraph(
+        pdf,
+        "TROPTIONS is the settlement infrastructure enabling UNYKORN BLACK and the broader WhichWay event ecosystem. The platform provides Proof of Funds (POF) custody, multi-asset escrow, transparent transaction reporting, and issuer tokenization pathways for sponsors and partners.",
+    )
+    paragraph(
+        pdf,
+        "This document outlines the commercial opportunity for corporate sponsors, merchants, and issuers looking to participate in event mobility and settlement economics - and how TROPTIONS creates trust, compliance visibility, and equity upside for the entire network.",
+    )
+
+    section_title(pdf, "2) What is TROPTIONS Settlement?")
+    paragraph(
+        pdf,
+        "TROPTIONS combines regulated escrow custody, multi-chain settlement (USDC, ATP, and partner assets), real-time transaction visibility, and issuer tokenization to create a single trust layer for event commerce and mobility.",
+    )
+    features = [
+        "Proof of Funds (POF) custody: Sponsor prepayments and prepaid ride credits held in regulated escrow",
+        "Multi-asset settlement: USDC stablecoin, ATP settlement tokens, and future partner integrations",
+        "Transaction-level reporting: Every ride, sponsorship dollar, and settlement flow is auditable and transparent",
+        "Issuer tokenization: Sponsors and corporate partners can mint equity or performance tokens backed by actual ride volume and sponsor revenue",
+        "WhichWay ecosystem integration: Guest, map, merchant, and emergency modules all report settlement state",
+    ]
+    for f in features:
+        paragraph(pdf, f"- {f}", size=10, spacing=5.5)
+
+    section_title(pdf, "3) UNYKORN BLACK Use Case: Why Settlement Matters")
+    paragraph(
+        pdf,
+        "UNYKORN BLACK operates with prepaid demand (BlackPass), sponsor commitments (route and vehicle inventory), and account-backed corporate blocks. TROPTIONS provides:",
+    )
+    black_benefits = [
+        "Pre-event sponsor funds held in custody, releasing only on proof of delivery (rides confirmed, QR scans logged)",
+        "Real-time KPI reporting: sponsors see their vehicle placements, ride volume, and ROI by date, hour, and venue",
+        "Compliance audit trail: every sponsor dollar, every ride, every settlement recorded and auditable",
+        "Fast settlement: sponsor and corporate account charges settle daily to USDC or ATP, reducing operational float",
+    ]
+    for b in black_benefits:
+        paragraph(pdf, f"- {b}", size=10, spacing=5.5)
+
+    section_title(pdf, "4) POF and Escrow Framework")
+    paragraph(
+        pdf,
+        "Proof of Funds is the cornerstone of sponsor confidence and lender certainty. TROPTIONS custody model:",
+    )
+    pof_points = [
+        "Sponsor prepayment deposits held in USDC escrow upon contract signature - never mixed with operational float",
+        "Escrow release tied to KPI delivery: minimum ride volume, geographic coverage, compliance checks, and event window performance",
+        "Monthly reconciliation and reporting to sponsors, lenders, and regulatory oversight",
+        "Full chain-of-custody documentation - every transaction ID, timestamp, and settlement proof recorded",
+    ]
+    for p in pof_points:
+        paragraph(pdf, f"- {p}", size=10, spacing=5.5)
+
+    pdf.add_page()
+    add_title(
+        pdf,
+        "TROPTIONS Sponsor Opportunity - Equity & Token Sales",
+        "How Sponsors Become Issuers and Capture Upside",
+    )
+
+    section_title(pdf, "5) Sponsor as Issuer: Equity and Token Participation")
+    paragraph(
+        pdf,
+        "A Founding Sponsor or Route Sponsor can structure their participation as a tokenized equity or performance share. Instead of a fixed $150K or $25K sponsorship spend, the sponsor can allocate capital toward ownership in one or more event mobility verticals.",
+    )
+
+    section_title(pdf, "5a) Equity Issuance Model")
+    equity_model = [
+        "Sponsor invests $150K in UNYKORN BLACK and receives tokenized equity (e.g., 5-10% revenue share or profit participation)",
+        "Tokens are minted on the Apostle Chain (chain_id 7332) and registered with TROPTIONS settlement engine",
+        "Monthly settlement: UNYKORN BLACK revenue attributed to that route/sponsor tier is calculated, and sponsor token holders receive proportional ATP settlement",
+        "Transferable: sponsor can sell, trade, or hold their equity tokens on the Apostle marketplace",
+    ]
+    for em in equity_model:
+        paragraph(pdf, f"- {em}", size=10, spacing=5.5)
+
+    section_title(pdf, "5b) Performance Token Model (Pay-Per-Ride Upside)")
+    paragraph(
+        pdf,
+        "Alternative structure: sponsor pays a smaller upfront fee ($25-50K) and receives performance tokens that earn based on actual ride volume and merchant referrals triggered by their branded inventory.",
+    )
+    perf_model = [
+        "Sponsor mints 1,000 performance tokens at $25 each",
+        "Each ride using sponsor route earns 0.5 ATP per ride (distributed to token holders quarterly)",
+        "Merchant referrals attributed to sponsor signage earn 0.1 ATP per qualified lead",
+        "Token holders can claim their ATP earnings directly to their Apostle Chain wallet or keep compounding",
+    ]
+    for pm in perf_model:
+        paragraph(pdf, f"- {pm}", size=10, spacing=5.5)
+
+    section_title(pdf, "6) Issuer Commercial Terms")
+    paragraph(
+        pdf,
+        "TROPTIONS charges 2% settlement fee on all sponsor payouts. Equity and token sponsors benefit from full transparency and monthly settlement.",
+    )
+    issuer_terms = [
+        "Setup: TROPTIONS registry entry + Apostle Chain wallet provisioning + smart contract token mint",
+        "Settlement: daily ride/referral aggregation, monthly ATP calculation and settlement",
+        "Custody: sponsor tokens held in non-custodial Apostle Chain wallets; sponsors own private keys",
+        "Reporting: daily KPI dashboard, monthly settlement statement, quarterly tax-ready reporting",
+        "Transferability: tokens tradeable on Apostle marketplace, no lockup period after minting",
+    ]
+    for it in issuer_terms:
+        paragraph(pdf, f"- {it}", size=10, spacing=5.5)
+
+    section_title(pdf, "7) Compliance and Audit")
+    paragraph(
+        pdf,
+        "TROPTIONS settlement is built for compliance and audit. All transactions are recorded on the Apostle Chain (transparent, immutable) and cross-referenced with WhichWay KPI systems.",
+    )
+    compliance = [
+        "SEC framework: tokenized equity and revenue participation structures reviewed for securities compliance",
+        "AML/KYC: sponsor identities verified at token mint time; settlement flows logged and reported",
+        "Tax reporting: monthly settlement statements capture realized gains, losses, and income for 1099/foreign tax reporting",
+        "Audit trail: every ride, route placement, merchant referral, and settlement proof auditable back to source transaction",
+    ]
+    for c in compliance:
+        paragraph(pdf, f"- {c}", size=10, spacing=5.5)
+
+    section_title(pdf, "8) Why Sponsors Choose TROPTIONS + UNYKORN BLACK")
+    paragraph(
+        pdf,
+        "Sponsors and issuers benefit from a complete operating stack: real-time event mobility asset inventory, transparent sponsor ROI measurement, and tokenized equity upside backed by actual ride economics.",
+    )
+    why_troptions = [
+        "No middleman: direct token ownership, no escrow lock-in, daily settlement to your wallet",
+        "Real revenue data: sponsorship ROI is calculated in rides, conversions, and merchant traffic - not guesses",
+        "Liquid asset class: your token is tradeable day one; no 5-7 year lockup",
+        "Network effects: more sponsors = more ride inventory = higher token value for early issuers",
+        "Ecosystem scaling: WhichWay guest flow, demo, passport, and merchant modules all drive sponsor token value",
+    ]
+    for w in why_troptions:
+        paragraph(pdf, f"- {w}", size=10, spacing=5.5)
+
+    section_title(pdf, "9) Next Steps: Become an Issuer")
+    paragraph(
+        pdf,
+        "Sponsors interested in equity or token participation should contact TROPTIONS directly.",
+    )
+    next_steps = [
+        "Complete issuer KYC application and commercial term sheet",
+        "Provide capital commitment and token allocation preference (equity model vs. performance model)",
+        "TROPTIONS provisions Apostle Chain wallet and mints token contract",
+        "Settlement begins within 30 days of first UNYKORN BLACK rides under your sponsorship",
+    ]
+    for ns in next_steps:
+        paragraph(pdf, f"- {ns}", size=10, spacing=5.5)
+
+    paragraph(
+        pdf,
+        "\nTROPTIONS Settlement Platform\nhttps://fifa.unykorn.org/\nSupporting UNYKORN BLACK, WhichWay ecosystem, and multi-chain event commerce.",
+        size=10,
+        spacing=5.5,
+    )
+
+    pdf.output(str(DOWNLOADS / "unykorn-black-troptions-settlement.pdf"))
+
+
 def build_zip() -> None:
     zip_path = DOWNLOADS / "unykorn-black-downloads.zip"
     members = [
         "unykorn-black-lender-proposal.pdf",
         "unykorn-black-sponsor-rate-card.pdf",
+        "unykorn-black-troptions-settlement.pdf",
         "unykorn-black-lender-proposal.docx",
         "unykorn-black-event-demand-calendar.csv",
     ]
@@ -384,6 +553,7 @@ def build_zip() -> None:
 def main() -> None:
     build_lender_pdf()
     build_rate_card_pdf()
+    build_troptions_settlement_pdf()
     build_docx()
     build_csv()
     build_zip()
