@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNYKORN BLACK | Premium Event Mobility</title>
+  <meta name="description" content="UNYKORN BLACK funder site: premium fleet, sponsor routes, event demand calendar, and lender-ready downloads." />
+  <style>
+    :root {
+      --bg: #04070d;
+      --panel: #0b1322;
+      --line: #1f2b43;
+      --gold: #d6a84f;
+      --cyan: #21d4fd;
+      --white: #f5f8ff;
+      --muted: #9eb0cb;
+      --green: #27d36d;
+      --max: 1200px;
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(1200px 500px at 80% -20%, rgba(33,212,253,0.12), transparent), radial-gradient(900px 400px at 20% 20%, rgba(214,168,79,0.13), transparent), var(--bg);
+      color: var(--white);
+      line-height: 1.45;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(var(--max), 92vw); margin: 0 auto; }
+
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.09);
+      background: rgba(4,7,13,0.8);
+    }
+
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand img {
+      width: 50px; height: 50px; border-radius: 14px; object-fit: cover;
+      border: 1px solid rgba(33,212,253,0.35);
+      box-shadow: 0 0 24px rgba(33,212,253,0.2);
+      background: #000;
+    }
+    .brand h1 { margin: 0; font-size: 1rem; letter-spacing: 0.04em; }
+    .brand p { margin: 2px 0 0; color: var(--cyan); font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; }
+
+    .menu { display: flex; gap: 14px; color: #ced8ea; font-size: 0.92rem; flex-wrap: wrap; }
+    .menu a:hover { color: #fff; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--gold); color: #131313;
+      font-weight: 800; border-radius: 999px;
+      padding: 12px 18px; border: none; cursor: pointer;
+      transition: transform .18s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn.alt { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--white); }
+
+    section { padding: 60px 0; }
+
+    .hero { display: grid; gap: 28px; align-items: center; grid-template-columns: 1.1fr .9fr; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(214,168,79,0.35);
+      border-radius: 999px; padding: 8px 14px;
+      color: var(--gold); text-transform: uppercase;
+      font-size: .72rem; letter-spacing: .18em; font-weight: 700;
+      background: rgba(214,168,79,0.08);
+    }
+
+    .hero h2 { margin: 10px 0 0; font-size: clamp(2rem, 6vw, 4.4rem); line-height: .98; letter-spacing: -0.045em; }
+    .sub { color: var(--muted); font-size: 1.08rem; max-width: 70ch; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+    .hero-tags { margin-top: 16px; color: #9eabc3; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+    .hero-logo img { width: 100%; border-radius: 16px; object-fit: cover; border: 1px solid rgba(33,212,253,.22); }
+
+    .kpi-grid { margin-top: 24px; display: grid; gap: 14px; grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .kpi { border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 14px; background: rgba(255,255,255,.03); }
+    .kpi .v { font-size: 1.55rem; font-weight: 800; }
+    .kpi .l { color: var(--muted); font-size: .86rem; }
+
+    .head { margin-bottom: 18px; }
+    .head h3 { margin: 0; font-size: clamp(1.5rem, 4vw, 2.5rem); letter-spacing: -0.02em; }
+    .head p { margin: 7px 0 0; color: var(--muted); max-width: 72ch; }
+
+    .fleet-grid { display: grid; gap: 14px; grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .card { border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; overflow: hidden; background: #0a1424; }
+    .card img { width: 100%; height: 170px; object-fit: cover; display: block; }
+    .card .body { padding: 12px; }
+    .card .pill { display: inline-block; font-size: .74rem; color: var(--cyan); margin-bottom: 6px; }
+    .card h4 { margin: 0 0 6px; font-size: 1.02rem; }
+    .card p { margin: 0 0 6px; color: var(--muted); font-size: .92rem; }
+    .card .use { color: #d8e4f8; font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; }
+
+    .ecosystem-grid { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .linkcard { border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; background: rgba(255,255,255,0.03); padding: 14px; display: grid; gap: 9px; }
+    .linkcard .title { font-weight: 800; }
+    .linkcard .note { color: var(--muted); font-size: .9rem; }
+    .linkcard a { display: inline-block; color: var(--cyan); font-weight: 700; font-size: .86rem; letter-spacing: .06em; text-transform: uppercase; }
+
+    .finance-wrap { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+    .checks { display: grid; gap: 8px; }
+    .checks div { border: 1px solid rgba(39,211,109,.28); background: rgba(39,211,109,.08); color: #ceffe3; border-radius: 10px; padding: 9px 10px; font-size: .92rem; }
+
+    .scenario-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .tab { border: 1px solid rgba(255,255,255,0.2); color: #d6e2f4; border-radius: 999px; padding: 7px 12px; cursor: pointer; font-size: .84rem; background: rgba(255,255,255,0.03); }
+    .tab.active { border-color: var(--gold); color: #fff; background: rgba(214,168,79,.18); }
+
+    .mini-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+    .mini { border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px; background: rgba(255,255,255,0.02); }
+    .mini .n { font-size: .8rem; color: var(--muted); }
+    .mini .v { font-size: 1.1rem; font-weight: 800; }
+
+    table { width: 100%; border-collapse: collapse; border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; overflow: hidden; background: rgba(255,255,255,0.03); font-size: .92rem; }
+    th, td { border-bottom: 1px solid rgba(255,255,255,0.09); padding: 10px; text-align: left; vertical-align: top; }
+    th { background: rgba(255,255,255,0.05); font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; color: #dbe7fb; }
+
+    .bars { display: grid; gap: 10px; margin-top: 10px; }
+    .bar-row { display: grid; gap: 8px; }
+    .bar-row .meta { display: flex; justify-content: space-between; font-size: .85rem; color: #d4e2f6; }
+    .track { height: 10px; border-radius: 999px; background: #0f1d34; overflow: hidden; border: 1px solid #20365c; }
+    .fill { height: 100%; background: linear-gradient(90deg, var(--cyan), #7fe8ff); }
+
+    .passes { display: grid; gap: 10px; grid-template-columns: repeat(4, minmax(0,1fr)); }
+    .pass { border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 12px; background: rgba(255,255,255,.02); }
+    .pass h5 { margin: 0 0 6px; font-size: 1rem; }
+    .pass p { margin: 0 0 8px; color: var(--muted); font-size: .9rem; }
+    .pass .price { font-weight: 800; color: var(--gold); }
+
+    .downloads { display: grid; gap: 12px; grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .dl { border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 14px; display: grid; gap: 8px; background: rgba(255,255,255,0.03); }
+    .dl .tag { color: var(--cyan); font-size: .75rem; text-transform: uppercase; letter-spacing: .12em; }
+    .dl .title { font-weight: 800; }
+    .dl .desc { color: var(--muted); font-size: .9rem; }
+
+    .sponsors { display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0,1fr)); }
+
+    .cta { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; border: 1px solid rgba(255,255,255,.15); border-radius: 16px; padding: 16px; background: linear-gradient(180deg, rgba(214,168,79,.12), rgba(33,212,253,.06)); }
+
+    .form { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+    .form input, .form textarea { width: 100%; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,.3); color: #fff; border-radius: 10px; padding: 10px; font: inherit; }
+    .form textarea { grid-column: 1/-1; min-height: 95px; resize: vertical; }
+    .form .btn { grid-column: 1/-1; width: fit-content; }
+
+    footer { padding: 26px 0 46px; color: #9cafcc; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 34px; font-size: .9rem; }
+
+    .reveal { animation: rise .6s ease both; }
+    .reveal.d2 { animation-delay: .12s; }
+    .reveal.d3 { animation-delay: .24s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 1050px) {
+      .hero, .finance-wrap, .cta { grid-template-columns: 1fr; }
+      .fleet-grid, .kpi-grid, .passes, .sponsors, .ecosystem-grid, .downloads { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+
+    @media (max-width: 700px) {
+      .menu { display: none; }
+      section { padding: 44px 0; }
+      .fleet-grid, .kpi-grid, .passes, .sponsors, .ecosystem-grid, .downloads, .form { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a href="#top" class="brand">
+        <img src="brand/unykorn-black-shield-2026-05-08.png" alt="UNYKORN BLACK shield" />
+        <div>
+          <h1>UNYKORN BLACK</h1>
+          <p>Premium Event Mobility</p>
+        </div>
+      </a>
+      <nav class="menu">
+        <a href="#fleet">Fleet</a>
+        <a href="#whichway">WhichWay</a>
+        <a href="#downloads">Downloads</a>
+        <a href="#events">Events</a>
+        <a href="#funding">Funding</a>
+      </nav>
+      <a class="btn" href="downloads/unykorn-black-lender-proposal.pdf" download>Download Proposal</a>
+    </div>
+  </header>
+
+  <main id="top" class="wrap">
+    <section class="hero">
+      <div class="reveal">
+        <div class="chip">WhichWay premium mobility layer</div>
+        <h2>Luxury fleet. Sponsor routes. Event mobility.</h2>
+        <p class="sub">UNYKORN BLACK extends the live WhichWay / WWAI Global Guest OS into a premium black SUV, sedan, van, and shuttle revenue layer for VIP rides, corporate blocks, sponsor placements, merchant referrals, and TROPTIONS Pay reporting.</p>
+        <div class="hero-actions">
+          <a class="btn" href="downloads/unykorn-black-lender-proposal.pdf" download>Download Lender Packet</a>
+          <a class="btn alt" href="https://fifa.unykorn.org/" target="_blank" rel="noreferrer">Open fifa.unykorn.org</a>
+        </div>
+        <div class="hero-tags">Atlanta launch • 5-8 vehicles • WhichWay app extension • Partner fleet overflow</div>
+      </div>
+      <div class="panel hero-logo reveal d2">
+        <img src="brand/unykorn-black-logo-2026-05-08.png" alt="UNYKORN BLACK logo" />
+        <div style="padding:12px 4px 0;">
+          <div style="color:#9cb0cc;font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;">Base-case projection</div>
+          <div style="display:flex;justify-content:space-between;align-items:end;gap:12px;margin-top:8px;">
+            <div style="font-weight:900;font-size:2rem;">$1.41M</div>
+            <div style="border:1px solid rgba(39,211,109,.4);background:rgba(39,211,109,.13);border-radius:10px;padding:8px 10px;text-align:right;">
+              <div style="font-weight:800;color:#95ffbf;">7.2x DSCR</div>
+              <div style="font-size:.78rem;color:#bad3ee;">May-Dec 2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="kpi-grid reveal d3">
+        <div class="kpi"><div class="v">$1.41M</div><div class="l">Base-case gross revenue<br/>May-Dec launch window</div></div>
+        <div class="kpi"><div class="v">$650K</div><div class="l">Funding request<br/>Fleet, insurance, tech, working capital</div></div>
+        <div class="kpi"><div class="v">$433K</div><div class="l">Projected EBITDA<br/>Base 6-vehicle scenario</div></div>
+        <div class="kpi"><div class="v">5-8</div><div class="l">Vehicles<br/>Owned fleet + licensed overflow</div></div>
+      </div>
+    </section>
+
+    <section id="fleet">
+      <div class="head">
+        <div class="chip">UNYKORN BLACK fleet visuals</div>
+        <h3>A premium fleet look funders and sponsors can feel immediately.</h3>
+        <p>These concepts establish the black, cyan, silver, luxury identity for SUVs, sedans, vans, and shuttle-style routes.</p>
+      </div>
+      <div class="fleet-grid">
+        <article class="card"><img src="fleet/unykorn-black-suv-2026-05-08.png" alt="UNYKORN BLACK SUV" /><div class="body"><div class="pill">5-7 passengers</div><h4>UNYKORN BLACK SUV</h4><p>Flagship black SUV for executive arrivals, sponsor dinners, stadium routing, and high-value guest movement.</p><div class="use">Airport • Hotel • Stadium • VIP</div></div></article>
+        <article class="card"><img src="fleet/unykorn-black-sedan-2026-05-08.png" alt="UNYKORN BLACK Sedan" /><div class="body"><div class="pill">3-4 passengers</div><h4>UNYKORN BLACK Sedan</h4><p>Discreet chauffeur-class sedan for executives, private meetings, hotel transfers, and premium city routes.</p><div class="use">Executive • City • Sponsor Dinner</div></div></article>
+        <article class="card"><img src="fleet/unykorn-black-van-2026-05-08.png" alt="UNYKORN BLACK Van" /><div class="body"><div class="pill">8-12 passengers</div><h4>UNYKORN BLACK Van</h4><p>Premium group van for hotels, sponsors, VIP groups, curated routes, and event-to-dinner movement.</p><div class="use">Groups • Hotels • Sponsors</div></div></article>
+        <article class="card"><img src="fleet/unykorn-black-shuttle-2026-05-08.png" alt="UNYKORN BLACK Shuttle" /><div class="body"><div class="pill">10-14 passengers</div><h4>UNYKORN BLACK Shuttle</h4><p>Future-facing shuttle concept for premium loops, campus movement, and sponsor-branded route service.</p><div class="use">Event Loop • Venue Campus • Partner Routes</div></div></article>
+      </div>
+    </section>
+
+    <section id="whichway">
+      <div class="head">
+        <div class="chip">Built into fifa.unykorn.org</div>
+        <h3>UNYKORN BLACK is the premium mobility module inside the WhichWay event OS.</h3>
+        <p>Funders can open each live link and see how the fleet layer connects to the guest OS, demo, passport rewards, venue map, merchants, emergency support, and signup flow.</p>
+      </div>
+      <div class="ecosystem-grid">
+        <article class="linkcard"><div class="title">WhichWay Platform</div><div class="note">Main public system entry point.</div><a href="https://fifa.unykorn.org/" target="_blank" rel="noreferrer">Open Link</a></article>
+        <article class="linkcard"><div class="title">Guest OS</div><div class="note">Guest interface with navigation, wallet, food, SafeZone, and emergency support.</div><a href="https://fifa.unykorn.org/guest" target="_blank" rel="noreferrer">Open Link</a></article>
+        <article class="linkcard"><div class="title">Live Demo</div><div class="note">Controlled demo with truth labels, voice AI, dashboard, and commerce flow.</div><a href="https://fifa.unykorn.org/demo" target="_blank" rel="noreferrer">Open Link</a></article>
+        <article class="linkcard"><div class="title">Passport</div><div class="note">Rewards, badges, coupons, and loyalty mechanics.</div><a href="https://fifa.unykorn.org/passport" target="_blank" rel="noreferrer">Open Link</a></article>
+        <article class="linkcard"><div class="title">Venue Map</div><div class="note">Map and navigation layer for pickup, dropoff, and route corridors.</div><a href="https://fifa.unykorn.org/map" target="_blank" rel="noreferrer">Open Link</a></article>
+        <article class="linkcard"><div class="title">Merchants</div><div class="note">Marketplace for restaurants, hotels, lounges, retail, and QR offers.</div><a href="https://fifa.unykorn.org/merchants" target="_blank" rel="noreferrer">Open Link</a></article>
+        <article class="linkcard"><div class="title">Emergency</div><div class="note">Emergency and support flows for guest safety and escalation.</div><a href="https://fifa.unykorn.org/emergency" target="_blank" rel="noreferrer">Open Link</a></article>
+        <article class="linkcard"><div class="title">Sign Up</div><div class="note">Lead capture for guests, partners, sponsors, and fleet operators.</div><a href="https://fifa.unykorn.org/sign-up" target="_blank" rel="noreferrer">Open Link</a></article>
+        <article class="linkcard"><div class="title">Sales Deck</div><div class="note">Commercial WhichWay sales deck for funders and sponsors.</div><a href="https://fifa.unykorn.org/sales" target="_blank" rel="noreferrer">Open Link</a></article>
+      </div>
+    </section>
+
+    <section id="funding">
+      <div class="head">
+        <div class="chip">Why this is financeable</div>
+        <h3>Vehicle-backed revenue with sponsor upside.</h3>
+        <p>The fleet creates collateral-backed ride revenue. The platform creates scalable upside through sponsors, BlackPass presales, hotel blocks, merchant referrals, and settlement reporting.</p>
+      </div>
+      <div class="finance-wrap">
+        <div class="panel">
+          <div class="checks">
+            <div>Prepaid bookings and account-backed dispatch reduce cash risk.</div>
+            <div>Sponsor packages and BlackPass credits can be sold before peak event demand.</div>
+            <div>Partner fleet overflow avoids overbuying vehicles before demand is proven.</div>
+            <div>TROPTIONS Pay reporting creates a clear audit trail for operator settlement.</div>
+          </div>
+        </div>
+
+        <div class="panel" id="scenario-panel">
+          <div style="color:#aac1df;font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;">Selected scenario</div>
+          <div style="font-size:1.2rem;font-weight:800;margin:4px 0 10px;">Base · 6 vehicles · 7.2x DSCR</div>
+          <div class="scenario-tabs">
+            <button class="tab" data-key="Lean">Lean</button>
+            <button class="tab active" data-key="Base">Base</button>
+            <button class="tab" data-key="Growth">Growth</button>
+          </div>
+          <div class="mini-grid">
+            <div class="mini"><div class="n">Gross revenue</div><div class="v" id="gross">$1,414,200</div></div>
+            <div class="mini"><div class="n">Opex before debt</div><div class="v" id="opex">$981,000</div></div>
+            <div class="mini"><div class="n">EBITDA</div><div class="v" id="ebitda">$433,200</div></div>
+            <div class="mini"><div class="n">Cash after debt</div><div class="v" id="cash">$373,351</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="head">
+        <div class="chip">Funding request</div>
+        <h3>$650,000 controlled launch package.</h3>
+        <p>Funds support fleet acquisition, insurance, compliance, dispatch technology, sponsor materials, and working capital. The model scales only after sponsor and account-backed demand is secured.</p>
+      </div>
+      <div class="panel" style="margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+          <div style="font-size:.95rem;color:var(--muted);">Total listed use of funds</div>
+          <div style="font-size:1.2rem;font-weight:900;color:var(--gold);">$650,000</div>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>Category</th><th>Amount</th></tr></thead>
+        <tbody>
+          <tr><td>Vehicle acquisition / down payments</td><td>$115,000</td></tr>
+          <tr><td>Equipment / vehicle financing facility</td><td>$350,000</td></tr>
+          <tr><td>Insurance reserve</td><td>$45,000</td></tr>
+          <tr><td>Licensing, compliance, legal, accounting</td><td>$25,000</td></tr>
+          <tr><td>Website, app, dispatch buildout</td><td>$35,000</td></tr>
+          <tr><td>Branding, QR, sponsor materials</td><td>$20,000</td></tr>
+          <tr><td>Working capital reserve</td><td>$60,000</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="head">
+        <div class="chip">Base-case revenue mix</div>
+        <h3>Projected May-Dec 2026 gross revenue</h3>
+      </div>
+      <div class="panel bars">
+        <div class="bar-row"><div class="meta"><span>Owned rides</span><span>$714,200</span></div><div class="track"><div class="fill" style="width:100%"></div></div></div>
+        <div class="bar-row"><div class="meta"><span>VIP blocks</span><span>$110,000</span></div><div class="track"><div class="fill" style="width:15.4%"></div></div></div>
+        <div class="bar-row"><div class="meta"><span>BlackPass</span><span>$150,000</span></div><div class="track"><div class="fill" style="width:21%"></div></div></div>
+        <div class="bar-row"><div class="meta"><span>Sponsors</span><span>$275,000</span></div><div class="track"><div class="fill" style="width:38.5%"></div></div></div>
+        <div class="bar-row"><div class="meta"><span>Referrals</span><span>$75,000</span></div><div class="track"><div class="fill" style="width:10.5%"></div></div></div>
+        <div class="bar-row"><div class="meta"><span>Partner fleet</span><span>$60,000</span></div><div class="track"><div class="fill" style="width:8.4%"></div></div></div>
+        <div class="bar-row"><div class="meta"><span>Settlement</span><span>$30,000</span></div><div class="track"><div class="fill" style="width:4.2%"></div></div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="head">
+        <div class="chip">BlackPass packages</div>
+        <h3>Prepaid demand before vehicles roll</h3>
+      </div>
+      <div class="passes">
+        <article class="pass"><h5>BlackPass Match</h5><p>Match-day round trip + QR ride pass</p><div class="price">$750-$1,500</div></article>
+        <article class="pass"><h5>BlackPass Weekend</h5><p>Multi-day ride credits + concierge</p><div class="price">$2,500-$5,000</div></article>
+        <article class="pass"><h5>BlackPass Executive</h5><p>Priority vehicle blocks + premium support</p><div class="price">$7,500-$15,000</div></article>
+        <article class="pass"><h5>BlackPass Hotel</h5><p>Hotel guest mobility package</p><div class="price">$15,000-$50,000</div></article>
+      </div>
+    </section>
+
+    <section id="downloads">
+      <div class="head">
+        <div class="chip">Downloadable funding documents</div>
+        <h3>Professional handoff packet for banks, lenders, and sponsors.</h3>
+        <p>All files are live and stored in the local downloads folder for immediate use.</p>
+      </div>
+      <div class="downloads">
+        <article class="dl"><div class="tag">PDF</div><div class="title">Lender Proposal PDF</div><div class="desc">Full funding request, use of funds, financial model, collateral story, and event calendar.</div><a class="btn" href="downloads/unykorn-black-lender-proposal.pdf" download>Download</a></article>
+        <article class="dl"><div class="tag">DOCX</div><div class="title">Editable Proposal</div><div class="desc">Editable version for banks, private lenders, partners, and sponsors.</div><a class="btn" href="downloads/unykorn-black-lender-proposal.docx" download>Download</a></article>
+        <article class="dl"><div class="tag">PDF</div><div class="title">Sponsor Rate Card</div><div class="desc">Vehicle, route, merchant, and activation pricing.</div><a class="btn" href="downloads/unykorn-black-sponsor-rate-card.pdf" download>Download</a></article>
+        <article class="dl"><div class="tag">CSV</div><div class="title">Event Demand Calendar</div><div class="desc">Atlanta-area event demand calendar for sales targeting and routing.</div><a class="btn" href="downloads/unykorn-black-event-demand-calendar.csv" download>Download</a></article>
+        <article class="dl" style="grid-column:1/-1;"><div class="tag">ZIP</div><div class="title">Complete Download Pack</div><div class="desc">All funding and sponsor docs bundled together.</div><a class="btn" href="downloads/unykorn-black-downloads.zip" download>Download</a></article>
+      </div>
+    </section>
+
+    <section id="events">
+      <div class="head">
+        <div class="chip">Atlanta-area event demand calendar</div>
+        <h3>Where the fleet makes money after launch.</h3>
+        <p>Use this as the sales targeting calendar for ride blocks, route sponsors, hotel packages, merchant placements, and partner fleet surge planning.</p>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Date</th><th>Event</th><th>Venue</th><th>Tier</th><th>Revenue angle</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>May 24, 2026</td><td>Birthday Bash ATL</td><td>State Farm Arena</td><td>B+</td><td>Late-night VIP routes, after-event offers, sponsor nightlife traffic</td></tr>
+          <tr><td>June 8-9, 2026</td><td>Megan Moroney</td><td>State Farm Arena</td><td>B</td><td>Concert transfers, hotel pickup, premium downtown routes</td></tr>
+          <tr><td>June 9-14, 2026</td><td>Atlanta Market + Atlanta Apparel</td><td>AmericasMart</td><td>A</td><td>Buyers, vendors, showroom executives, airport and hotel routes</td></tr>
+          <tr><td>June 15-July 15, 2026</td><td>Atlanta World Cup match window</td><td>Atlanta Stadium / Mercedes-Benz Stadium</td><td>A+</td><td>VIP arrivals, hotel-stadium-dining loops, sponsors</td></tr>
+          <tr><td>Aug. 21, 2026</td><td>Chris Stapleton</td><td>Mercedes-Benz Stadium</td><td>A</td><td>Stadium concert, suite guests, sponsor hospitality, reserved exits</td></tr>
+          <tr><td>Aug. 26-30, 2026</td><td>TOUR Championship</td><td>East Lake Golf Club</td><td>A</td><td>Executive golf, sponsor hospitality, corporate blocks, airport transfers</td></tr>
+          <tr><td>Aug. 27, 2026</td><td>AC/DC POWER UP Tour</td><td>Mercedes-Benz Stadium</td><td>A</td><td>Major stadium concert, premium arrivals and late-night exits</td></tr>
+          <tr><td>Sept. 3-7, 2026</td><td>Dragon Con</td><td>Downtown Atlanta</td><td>A</td><td>Multi-day hotel corridor, fan groups, VIP events, merchant offers</td></tr>
+          <tr><td>Sept. 18-20, 2026</td><td>Shaky Knees</td><td>Piedmont Park</td><td>A</td><td>Festival rides, hotel packages, sponsor QR offers, group exits</td></tr>
+          <tr><td>Oct. 10-11, 2026</td><td>Atlanta Pride</td><td>Piedmont Park</td><td>B+</td><td>Festival mobility, hotel routes, merchant and safety-oriented routing</td></tr>
+          <tr><td>Nov. 10-11, 2026</td><td>The R&B Tour</td><td>Mercedes-Benz Stadium</td><td>A</td><td>High-demand concert nights, suite guests, sponsors, premium exits</td></tr>
+          <tr><td>Dec. 5, 2026</td><td>SEC Championship</td><td>Mercedes-Benz Stadium</td><td>A+</td><td>Corporate hospitality, alumni groups, VIP fan travel, sponsor routes</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="head">
+        <div class="chip">Sponsor engine</div>
+        <h3>Every route becomes premium media.</h3>
+        <p>Sponsors can buy vehicle placement, route inventory, QR offers, app placement, concierge mentions, and proof reports.</p>
+      </div>
+      <div class="sponsors">
+        <article class="pass"><h5>Founding Sponsor</h5><p>Top launch placement across site, app, fleet, ride confirmations, and proof reports.</p><div class="price">$150,000</div></article>
+        <article class="pass"><h5>Route Sponsor</h5><p>Own a premium corridor such as airport-to-hotel, hotel-to-stadium, or post-event dining.</p><div class="price">$25,000</div></article>
+        <article class="pass"><h5>Vehicle Sponsor</h5><p>Sponsor a black SUV or Sprinter with QR placement, receipt placement, and proof reporting.</p><div class="price">$15,000</div></article>
+        <article class="pass"><h5>Merchant Listing</h5><p>Verified placement for restaurants, hotels, lounges, retail, and local premium services.</p><div class="price">$2,500</div></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="head">
+        <div class="chip">Lender packet</div>
+        <h3>The clean funding ask.</h3>
+        <p>Request a $650,000 launch package for a 5-8 vehicle premium event fleet backed by sponsor presales, prepaid BlackPass credits, corporate blocks, vehicle collateral, and TROPTIONS Pay reporting.</p>
+      </div>
+      <div class="cta">
+        <div>
+          <div class="mini-grid">
+            <div class="mini"><div class="n">Base revenue</div><div class="v">$1.41M</div></div>
+            <div class="mini"><div class="n">Base EBITDA</div><div class="v">$433K</div></div>
+            <div class="mini"><div class="n">DSCR</div><div class="v">7.2x</div></div>
+            <div class="mini"><div class="n">Pre-sale target</div><div class="v">$590K</div></div>
+          </div>
+          <p class="sub" style="margin-top:12px; font-size:.92rem;">UNYKORN BLACK is a premium event mobility and advertising platform built for Atlanta's 2026 event economy. The business combines black SUV/Sprinter transportation, sponsor route packages, merchant referrals, corporate fleet blocks, and internal TROPTIONS Pay settlement reporting.</p>
+          <div class="hero-actions">
+            <a class="btn" href="downloads/unykorn-black-lender-proposal.pdf" download>Lender Proposal PDF</a>
+            <a class="btn alt" href="downloads/unykorn-black-lender-proposal.docx" download>Editable Proposal</a>
+            <a class="btn alt" href="downloads/unykorn-black-sponsor-rate-card.pdf" download>Sponsor Rate Card</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="margin:0 0 8px; font-size:1.2rem;">Launch the black-car revenue layer.</h4>
+          <p class="sub" style="font-size:.92rem;">Built for lenders, sponsors, hotels, corporate clients, and event operators who need a premium, compliant, revenue-producing mobility platform.</p>
+          <form class="form" onsubmit="event.preventDefault(); alert('Request captured locally. Connect this form to your CRM endpoint for production.');">
+            <input type="text" placeholder="Name / Company" required />
+            <input type="text" placeholder="Email / Phone" required />
+            <textarea placeholder="Funding / lending request"></textarea>
+            <button class="btn" type="submit">Request Access</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">© 2026 UNYKORN BLACK · Premium Event Mobility. Powered by TROPTIONS.<br/>Independent service. No official event affiliation implied without written authorization.</div>
+  </footer>
+
+  <script>
+    const scenarios = {
+      Lean: { fleet: '5 vehicles', dscr: '2.6x', gross: '$723,150', opex: '$595,000', ebitda: '$128,150', cash: '$79,230' },
+      Base: { fleet: '6 vehicles', dscr: '7.2x', gross: '$1,414,200', opex: '$981,000', ebitda: '$433,200', cash: '$373,351' },
+      Growth: { fleet: '8 vehicles', dscr: '10.5x', gross: '$2,365,000', opex: '$1,500,000', ebitda: '$865,000', cash: '$782,772' },
+    };
+
+    const panel = document.getElementById('scenario-panel');
+    const tabs = document.querySelectorAll('.tab');
+    const gross = document.getElementById('gross');
+    const opex = document.getElementById('opex');
+    const ebitda = document.getElementById('ebitda');
+    const cash = document.getElementById('cash');
+
+    function setScenario(key) {
+      const s = scenarios[key];
+      panel.querySelector('div:nth-child(2)').textContent = `${key} · ${s.fleet} · ${s.dscr} DSCR`;
+      gross.textContent = s.gross;
+      opex.textContent = s.opex;
+      ebitda.textContent = s.ebitda;
+      cash.textContent = s.cash;
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.key === key));
+    }
+
+    tabs.forEach(t => t.addEventListener('click', () => setScenario(t.dataset.key)));
+  </script>
+</body>
+</html>
