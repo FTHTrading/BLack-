@@ -28,6 +28,22 @@ UNYKORN BLACK combines:
 - Domain: `black.unykorn.org`
 - Platform: Cloudflare Pages
 
+## Auto Deploy (GitHub Actions)
+This repo includes `.github/workflows/deploy-cloudflare-pages.yml`.
+
+Set these GitHub repository secrets:
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+
+Then push to `main` and the site will deploy to Cloudflare Pages project `black-unykorn`.
+
+## Cloudflare Domain Binding
+In Cloudflare Pages:
+1. Open project `black-unykorn`
+2. Go to Custom domains
+3. Add `black.unykorn.org`
+4. Confirm DNS record in zone `unykorn.org`
+
 ## Local Preview
 Open `index.html` directly in browser, or serve via any static file server.
 
