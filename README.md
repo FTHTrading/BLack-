@@ -1,51 +1,31 @@
 # UNYKORN BLACK
 
-Premium Event Mobility launch site and lender packet for Atlanta 2026.
+Autonomous CyberTaxi enterprise architecture for Atlanta — fleet operations from 5655 Peachtree Pkwy, Norcross, GA, commercial insurance underwriting, UUPS revenue splits, and $UBK RWA tokenization.
 
-## Live Product Intent
-UNYKORN BLACK combines:
-- Premium black-car fleet operations
-- Sponsor route inventory
-- Merchant referral monetization
-- Event demand-driven dispatch
-- TROPTIONS reporting alignment
+## Live
+- Production: https://black.unykorn.org/
+- Alias: https://black.unykorn.ai/
+- Cloudflare Pages project: `black-unykorn`
 
-## Included In This Repo
-- `index.html`: full branded funder landing page
-- `brand/`: logo and shield assets
-- `fleet/`: SUV, sedan, van, shuttle concept visuals
-- `downloads/`: lender-ready files (PDF, DOCX, CSV, ZIP)
-- `docs/generate_docs.py`: script to regenerate downloadable docs
+## Product
+- Norcross depot staging, live fleet radar, CyberCab / Model Y / CyberVan tiers
+- Interactive insurance, split-ledger, and $UBK subscription calculators
+- BitGo custody narrative + Atlanta commercial lender directory
+- Voice tours (Atlas, Orion, Eve) and institutional document vault
 
-## Downloads
-- `downloads/unykorn-black-lender-proposal.pdf`
-- `downloads/unykorn-black-lender-proposal.docx`
-- `downloads/unykorn-black-sponsor-rate-card.pdf`
-- `downloads/unykorn-black-event-demand-calendar.csv`
-- `downloads/unykorn-black-downloads.zip`
+## Deploy
+Cloudflare Pages project `black-unykorn` (direct upload / wrangler).
 
-## Deploy Target
-- Domain: `black.unykorn.org`
-- Platform: Cloudflare Pages
+```bash
+npx wrangler pages deploy . --project-name black-unykorn --branch main
+```
 
-## Auto Deploy (GitHub Actions)
-This repo includes `.github/workflows/deploy-cloudflare-pages.yml`.
+Required: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
 
-Set these GitHub repository secrets:
-- `CLOUDFLARE_API_TOKEN`
-- `CLOUDFLARE_ACCOUNT_ID`
+GitHub Actions workflow in `.github/workflows/deploy-cloudflare-pages.yml` also publishes on push to `main` when those secrets are set.
 
-Then push to `main` and the site will deploy to Cloudflare Pages project `black-unykorn`.
-
-## Cloudflare Domain Binding
-In Cloudflare Pages:
-1. Open project `black-unykorn`
-2. Go to Custom domains
-3. Add `black.unykorn.org`
-4. Confirm DNS record in zone `unykorn.org`
-
-## Local Preview
-Open `index.html` directly in browser, or serve via any static file server.
+## Local preview
+Serve the repo root as a static site (any static file server). Open `index.html`.
 
 ## Brand + Legal
-Independent service. No official event affiliation implied without written authorization.
+UnyKorn LLC. Independent service. No official event affiliation implied without written authorization.
